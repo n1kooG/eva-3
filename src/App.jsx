@@ -3,12 +3,21 @@ import NotForm from './componentes/NotForm';
 import CuadriculaNotas from './componentes/CuadriculaNotas';
 import './styles.css';
 
+const obtenerNotasGuardadas = () => {
+  try {
+    const notasGuardadas = JSON.parse(localStorage.getItem('notas'));
+    return Array.isArray(notasGuardadas) ? notasGuardadas : [];
+  } catch {
+    return [];
+  }
+};
+
 const App = () => {
-  const [notas, setNotas] = useState([]);
+  const [notas, setNotas] = useState(obtenerNotasGuardadas);
 
   useEffect(() => {
-    const NotasGuardadas = JSON.parse(localStorage.getItem('notas')) || [];
-    setNotas(NotasGuardadas);
+    const notasGuardadas = JSON.parse(localStorage.getItem('notas')) || [];
+    setNotas(notasGuardadas);
   }, []);
 
   useEffect(() => {
