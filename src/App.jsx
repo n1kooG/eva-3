@@ -1,35 +1,35 @@
 import React, { useEffect, useState } from 'react';
-import NoteForm from './componentes/NoteForm';
-import NotesGrid from './componentes/NotesGrid';
+import NotForm from './componentes/NotForm';
+import CuadriculaNotas from './componentes/CuadriculaNotas';
 import './styles.css';
 
 const App = () => {
-  const [notes, setNotes] = useState([]);
+  const [notas, setNotas] = useState([]);
 
   useEffect(() => {
-    const storedNotes = JSON.parse(localStorage.getItem('notes')) || [];
-    setNotes(storedNotes);
+    const NotasGuardadas = JSON.parse(localStorage.getItem('notas')) || [];
+    setNotas(NotasGuardadas);
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('notes', JSON.stringify(notes));
-  }, [notes]);
+    localStorage.setItem('notas', JSON.stringify(notas));
+  }, [notas]);
 
-  const addNote = (note) => {
-    setNotes([...notes, note]);
+  const addNota = (nota) => {
+    setNotas([...notas, nota]);
   };
 
-  const deleteNote = (index) => {
-    const newNotes = [...notes];
-    newNotes.splice(index, 1);
-    setNotes(newNotes);
+  const delNota = (index) => {
+    const nuevaNota = [...notas];
+    nuevaNota.splice(index, 1);
+    setNotas(nuevaNota);
   };
 
   return (
     <div className="container">
-      <h1>Sticky Notes</h1>
-      <NoteForm addNote={addNote} />
-      <NotesGrid notes={notes} deleteNote={deleteNote} />
+      <h1>Notas Adhesivas</h1>
+      <NotForm addNota={addNota} />
+      <CuadriculaNotas notas={notas} deleteNote={delNota} />
     </div>
   );
 };
