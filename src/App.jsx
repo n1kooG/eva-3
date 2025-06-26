@@ -1,35 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useEffect, useState } from 'react';
+import NoteForm from './componentes/NoteForm';
+import NotesGrid from './componentes/NotesGrid';
+import './styles.css';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [notes, setNotes] = useState([]);
+
+  useEffect(() => {
+    const storedNotes = JSON.parse(localStorage.getItem('notes')) || [];
+    setNotes(storedNotes);
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('notes', JSON.stringify(notes));
+  }, [notes]);
+
+  const addNote = (note) => {
+    setNotes([...notes, note]);
+  };
+
+  const deleteNote = (index) => {
+    const newNotes = [...notes];
+    newNotes.splice(index, 1);
+    setNotes(newNotes);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+    <div className="container">
+      <h1>Sticky Notes</h1>
+      <NoteForm addNote={addNote} />
+      <NotesGrid notes={notes} deleteNote={deleteNote} />
+    </div>
+  );
+};
 
-export default App
+export default App;
+
